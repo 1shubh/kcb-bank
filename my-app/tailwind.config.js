@@ -4,8 +4,8 @@ module.exports = {
   theme: {
     extend: {
       colors:{
-       primary:"",
-       secondary:"",
+       primary:"#63bc46",
+       secondary:"#1f2c4c",
        black:{
         DEFAULT: "#000",
           100: "#1E1E2D",
@@ -17,7 +17,9 @@ module.exports = {
        red:"#E33838",
       },
       fontFamily: {
-        mregular: ["Montserrat-Regular", "sans-serif"],
+        dBold:["Din-pro-bold","sans-serif"],
+        dLight:["Din-pro-light","sans-serif"],
+        dMed:["Din-pro-med","sans-serif"]
       },
     },
   },

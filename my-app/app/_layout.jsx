@@ -18,6 +18,9 @@ export default function RootLayout() {
   const colorScheme = useColorScheme();
   const [loaded] = useFonts({
     roboto: require("../assets/fonts/Roboto-Regular.ttf"),
+    "Din-pro-bold": require("../assets/fonts/DIN-Pro-Bold-700.otf"),
+    "Din-pro-light":require("../assets/fonts/DIN Pro Light 300.otf"),
+    "Din-pro-med":require("../assets/fonts/DIN Pro Medium 500.otf")
   });
 
   useEffect(() => {
@@ -34,6 +37,9 @@ export default function RootLayout() {
     <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
       <Stack>
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+        <Stack.Screen name="(auth)" options={{ headerShown: false }} />
+        <Stack.Screen name="index" options={{ headerShown: false }} />
+        <Stack.Screen name="bank-transfer" options={{ headerShown: false }} />
         <Stack.Screen name="+not-found" />
       </Stack>
     </ThemeProvider>
