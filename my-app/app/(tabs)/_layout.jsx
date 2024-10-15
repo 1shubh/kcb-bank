@@ -7,9 +7,13 @@ import {
   FontAwesome6,
   SimpleLineIcons,
 } from "@expo/vector-icons"; // Correct imports
+import { Redirect } from "expo-router";
 import { TabBarIcon } from "@/components/navigation/TabBarIcon";
+import { useGlobalContext } from "../../context/GlobalProvider";
 
 const Tablayout = () => {
+  const { loading, isLogged } = useGlobalContext();
+  if (!loading && !isLogged) return <Redirect href="/sign-in" />;
   return (
     <Tabs
       screenOptions={{

@@ -6,7 +6,11 @@ import { LinearGradient } from "expo-linear-gradient";
 import logo from "../assets/images/logo.png";
 import { BankingIcon } from "../constants/icons";
 import CustomButton from "../components/CutomeButton";
+import { useGlobalContext } from "../context/GlobalProvider";
 const Welcome = () => {
+  const { loading, isLogged } = useGlobalContext();
+  if (!loading && isLogged) return <Redirect href="/(tabs)" />;
+
   return (
     <LinearGradient
       colors={[

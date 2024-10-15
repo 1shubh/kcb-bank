@@ -11,6 +11,7 @@ import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
 import Octicons from "@expo/vector-icons/Octicons";
 import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 import CustomDrawer from "../../components/CustomeDrawer";
+import { useGlobalContext } from "../../context/GlobalProvider";
 
 let quickLinks = [
   {
@@ -97,6 +98,8 @@ const otherLinks = [
 ];
 
 const HomeScreen = () => {
+  const { login, loading, error, user, isLogged } = useGlobalContext();
+
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const toggleDrawer = () => {
     setIsDrawerOpen(!isDrawerOpen);
@@ -138,10 +141,21 @@ const HomeScreen = () => {
           <View className="flex-row items-center w-[75%] justify-between mt-5 ml-auto mr-auto">
             <View className="w-[50%]">
               <Text className="text-[#68b352] font-dBold">Good Evening</Text>
-              <Text className="text-3xl font-dBold text-white">User name</Text>
+              <Text className="text-3xl font-dBold text-white">
+                {loading ? "" : user.user.name}
+              </Text>
             </View>
-            <View className="w-[100px] h-[100px] border-2 border-white rounded-full items-center justify-center">
-              <Feather name="user" size={45} color="white" />
+
+            <View className="w-[100px] h-[100px] border-2 border-white rounded-full items-center justify-center overflow-hidden">
+              {user && user.user.image ? (
+                <Image
+                  source={{ uri: user.user.image }}
+                  className="w-full h-full" // Use full width and height
+                  resizeMode="cover" // Use cover for better fitting
+                />
+              ) : (
+                <Feather name="user" size={45} color="white" />
+              )}
             </View>
           </View>
 

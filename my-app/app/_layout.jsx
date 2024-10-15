@@ -10,6 +10,7 @@ import { useEffect } from "react";
 import "react-native-reanimated";
 
 import { useColorScheme } from "@/hooks/useColorScheme";
+import GlobalProvider from "../context/GlobalProvider";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -19,8 +20,8 @@ export default function RootLayout() {
   const [loaded] = useFonts({
     roboto: require("../assets/fonts/Roboto-Regular.ttf"),
     "Din-pro-bold": require("../assets/fonts/DIN-Pro-Bold-700.otf"),
-    "Din-pro-light":require("../assets/fonts/DIN Pro Light 300.otf"),
-    "Din-pro-med":require("../assets/fonts/DIN Pro Medium 500.otf")
+    "Din-pro-light": require("../assets/fonts/DIN Pro Light 300.otf"),
+    "Din-pro-med": require("../assets/fonts/DIN Pro Medium 500.otf"),
   });
 
   useEffect(() => {
@@ -35,13 +36,17 @@ export default function RootLayout() {
 
   return (
     <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="(auth)" options={{ headerShown: false }} />
-        <Stack.Screen name="index" options={{ headerShown: false }} />
-        <Stack.Screen name="bank-transfer" options={{ headerShown: false }} />
-        <Stack.Screen name="+not-found" />
-      </Stack>
+      <GlobalProvider>
+        <Stack>
+          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+          <Stack.Screen name="(auth)" options={{ headerShown: false }} />
+          <Stack.Screen name="index" options={{ headerShown: false }} />
+          <Stack.Screen name="bank-transfer" options={{ headerShown: false }} />
+          <Stack.Screen name="select-bank" options={{ headerShown: false }} />
+          <Stack.Screen name="success" options={{ headerShown: false }} />
+          <Stack.Screen name="+not-found" />
+        </Stack>
+      </GlobalProvider>
     </ThemeProvider>
   );
 }
