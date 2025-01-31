@@ -10,26 +10,20 @@ import { useNavigation } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { router } from "expo-router";
-
-const countries = [
-  { name: "United States", code: "+1" },
-  { name: "Kenya", code: "+254" },
-  { name: "United Kingdom", code: "+44" },
-  // Add more countries
-];
+import countryCodes from "../../constants/country_codes.json";
 
 const CountryList = () => {
   const navigation = useNavigation();
   const [searchVisible, setSearchVisible] = useState(false); // Toggle for search input
   const [searchQuery, setSearchQuery] = useState(""); // State to store search query
-  const [filteredCountries, setFilteredCountries] = useState(countries); // State for filtered countries
+  const [filteredCountries, setFilteredCountries] = useState(countryCodes); // State for filtered countries
 
   // Function to handle country selection
   const handleCountrySelect = (country) => {
     // Pass the selected country name and code to the sign-in screen as strings
     router.push({
       pathname: "sign-in",
-      params: { selectedCountry: country.name, countryCode: country.code },
+      params: { selectedCountry: country.name, countryCode: country.dial_code,countrySelected:true },
     });
   };
 
@@ -37,7 +31,7 @@ const CountryList = () => {
   const handleSearch = (query) => {
     setSearchQuery(query);
     // Filter countries based on query
-    const filtered = countries.filter(
+    const filtered = countryCodes.filter(
       (country) =>
         country.name.toLowerCase().includes(query.toLowerCase()) ||
         country.code.includes(query)
@@ -84,7 +78,7 @@ const CountryList = () => {
               if (searchVisible) {
                 // Clear search when closing
                 setSearchQuery("");
-                setFilteredCountries(countries);
+                setFilteredCountries(countryCodes);
               }
               setSearchVisible(!searchVisible);
             }}
@@ -99,10 +93,9 @@ const CountryList = () => {
           keyExtractor={(item) => item.code}
           renderItem={({ item }) => (
             <TouchableOpacity onPress={() => handleCountrySelect(item)}>
-              <View className="p-4 border-b border-gray-200">
-                <Text className="text-black text-lg">
-                  {item.name} ({item.code})
-                </Text>
+              <View className="p-4 border-b border-gray-200 justify-between items-center flex-row">
+                <Text className="text-black text-md">{item.name}</Text>
+                <Text className="text-black text-md">{item.dial_code}</Text>
               </View>
             </TouchableOpacity>
           )}

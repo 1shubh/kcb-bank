@@ -1,10 +1,10 @@
 {
   "expo": {
-    "name": "my-app",
-    "slug": "my-app",
+    "name": "KCB Bank",
+    "slug": "Kcb-bank",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
+    "icon": "./assets/icons/notifications_5_0.png",
     "scheme": "myapp",
     "userInterfaceStyle": "automatic",
     "splash": {
@@ -17,20 +17,26 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/adaptive-icon.png",
+        "foregroundImage": "./assets/icons/ic_launcher.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.shubhkmr.Kcbbank"
     },
     "web": {
       "bundler": "metro",
       "output": "static",
-      "favicon": "./assets/images/favicon.png"
+      "favicon": "./assets/icons/ic_launcher.png"
     },
     "plugins": [
       "expo-router"
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "eas": {
+        "projectId": "aab57ea9-015e-4a66-90b8-27faa7a4fb30"
+      }
     }
   }
 }

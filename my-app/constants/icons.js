@@ -1,7 +1,29 @@
 import React from "react";
 import { Svg, Path } from "react-native-svg";
-
-export const BankingIcon = ({width,height}) => (
+import welcomeIcon from "../assets/icons/ic_payments_place.png";
+import signinicon from "../assets/icons/ic_kcb_get_started.png";
+import userIcon from "../assets/icons/avatar_white.png";
+import greenUser from "../assets/icons/avatar_green.png";
+import bankTransferIcon from "../assets/icons/ic_kcb_cash_transfers.png";
+import warningIcon from "../assets/icons/image_dialog_confirmation.png";
+import mobileTranferIcon from "../assets/icons/ic_kcb_send_mpesa.png";
+import otpwaiting from "../assets/icons/otp_wait_otp_waiting.png";
+import otpRecived from "../assets/icons/otp_wait_otp_received.png";
+import phoneicon from "../assets/icons/ic_kcb_buy_airtime.png";
+import insurance from "../assets/icons/insurance.png";
+import withdrawicon from "../assets/icons/ic_kcb_withdraw.png";
+import cardIcon from "../assets/icons/ic_kcb_card_services.png";
+import voompabill from "../assets/icons/ic_new_paybill.png";
+import vompaphone from "../assets/icons/ic_new_buy_goods.png";
+import schoolBoy from "../assets/icons/ic_new_school_fees.png";
+import homeSelected from "../assets/icons/ic_home_selected.png";
+import homeUnselected from "../assets/icons/ic_home_unselected.png";
+import loanSelected from "../assets/icons/ic_loans_selected.png";
+import loanUnselected from "../assets/icons/ic_loans_unselected.png";
+import accountSelected from "../assets/icons/ic_account_selected.png";
+import accountUnselected from "../assets/icons/ic_account_unselected.png";
+import accountAvatar from "../assets/icons/ic_loyalty_avatar.png";
+export const BankingIcon = ({ width, height }) => (
   <Svg
     version="1.1"
     id="Layer_1"
@@ -25,3 +47,29 @@ export const BankingIcon = ({width,height}) => (
     />
   </Svg>
 );
+
+export const icons = {
+  welcomeIcon,
+  signinicon,
+  userIcon,
+  greenUser,
+  bankTransferIcon,
+  warningIcon,
+  mobileTranferIcon,
+  otpwaiting,
+  otpRecived,
+  phoneicon,
+  insurance,
+  withdrawicon,
+  cardIcon,
+  vompaphone,
+  voompabill,
+  schoolBoy,
+  homeSelected,
+  homeUnselected,
+  loanSelected,
+  loanUnselected,
+  accountSelected,
+  accountUnselected,
+  accountAvatar,
+};

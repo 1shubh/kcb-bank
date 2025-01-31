@@ -1,43 +1,40 @@
-import { View, Text, StyleSheet, Alert } from "react-native";
+import { View, Text, StyleSheet, Alert, Image } from "react-native";
 import React, { useEffect, useState } from "react";
 import Fontisto from "@expo/vector-icons/Fontisto";
 import OtpTextInput from "react-native-text-input-otp";
-import { router } from "expo-router";
 import { DotIndicator } from "react-native-indicators";
+import { icons } from "../constants/icons";
 
-const Otp = ({ confirmTransfer, amount, recipientAccount }) => { // Add props here
+const Otp = ({ confirmTransfer, amount, recipientAccount }) => {
   const [otp, setOtp] = useState("");
-  const [autoFilled, setAutoFilled] = useState(false);
-  const [loading, setLoading] = useState(false); // Set initial loading to false
+  const [loading, setLoading] = useState(false);
+  const [hasValidated, setHasValidated] = useState(false); // New state to track validation
 
   useEffect(() => {
     // Simulate OTP autofill after 5 seconds
     const timer = setTimeout(() => {
-      setOtp("1234"); // Example OTP
-      setAutoFilled(true);
+      const autoFilledOtp = "1234"; // Example OTP
+      setOtp(autoFilledOtp);
+
+      if (!hasValidated) {
+        setLoading(true);
+        validateOtp(autoFilledOtp);
+      }
     }, 5000); // 5 seconds delay
 
     return () => clearTimeout(timer); // Cleanup timer on component unmount
-  }, []);
+  }, [hasValidated]);
 
-  useEffect(() => {
-    // Auto-validate OTP after autofill
-    if (autoFilled) {
-      setLoading(true); // Show loading indicator
-      validateOtp(); // Validate OTP
-    }
-  }, [autoFilled]);
-
-  const validateOtp = () => {
-    if (otp === "1234") {
-      // OTP is valid; call the transfer function
-      confirmTransfer(otp, amount, recipientAccount); // Call the transfer function
+  const validateOtp = (filledOtp) => {
+    if (hasValidated) return; // Prevent further calls after validation
+    if (filledOtp === "1234") {
+      setHasValidated(true); // Mark as validated
+      confirmTransfer(filledOtp, amount, recipientAccount); // Call transfer function
     } else {
       Alert.alert("Error", "Invalid OTP. Please try again.");
-      setLoading(false); // Stop loading on error
+      setLoading(false);
     }
   };
-
   // Mask the OTP input with "*"
   const maskedOtp = otp.replace(/./g, "*");
 
@@ -45,28 +42,33 @@ const Otp = ({ confirmTransfer, amount, recipientAccount }) => { // Add props he
     <View style={styles.overlay}>
       <View style={styles.confirmationContainer}>
         <View className="w-full mb-5">
-          <View className="border-[5px] border-gray-100 h-[120px] w-[120px] rounded-full p-5 ml-auto mr-auto items-center justify-center">
-            <Fontisto
+          <View className="h-[150px] w-[150px] rounded-full p-5 ml-auto mr-auto items-center justify-center">
+            {/* <Fontisto
               name="locked"
               size={50}
-              color={autoFilled ? "#63bc46" : "#19c1ef"}
+              color={otp ? "#63bc46" : "#19c1ef"}
+            /> */}
+            <Image
+              source={otp ? icons.otpRecived : icons.otpwaiting}
+              className="w-full h-full"
+              resizeMethod="contain"
             />
           </View>
           <Text
-            className={`text-center text-xl font-dBold ${
-              autoFilled ? "text-primary" : "text-[#19c1ef]"
+            className={`text-center text-xl font-mnsemibold ${
+              otp ? "text-primary" : "text-[#19c1ef]"
             }`}
           >
-            {autoFilled ? "OTP Received" : "Waiting for OTP"}
+            {otp ? "OTP Received" : "Waiting for OTP"}
           </Text>
-          <Text className="text-center mt-2 text-[#19c1ef]">
+          <Text className="text-center mt-2 text-[#19c1ef] font-medium">
             We Will Auto capture the Otp
           </Text>
         </View>
 
         {/* Display the masked OTP */}
         <OtpTextInput
-          otp={maskedOtp} // Show the masked version of OTP
+          otp={maskedOtp}
           setOtp={setOtp}
           digits={4}
           style={{
@@ -84,7 +86,7 @@ const Otp = ({ confirmTransfer, amount, recipientAccount }) => { // Add props he
           {loading ? (
             <DotIndicator color="#5cb85c" size={20} />
           ) : (
-            <Text className="text-center text-secondary text-xl mt-5">
+            <Text className="text-center text-secondary font-mnregular text-xl mt-5">
               Please Wait ....
             </Text>
           )}

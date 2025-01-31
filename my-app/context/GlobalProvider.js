@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState } from "react";
-
+import { router } from "expo-router";
 const GlobalContext = createContext();
 export const useGlobalContext = () => useContext(GlobalContext);
 
@@ -14,7 +14,7 @@ const GlobalProvider = ({ children }) => {
     setLoading(true); // Start loading
     setError(""); // Clear previous error
     try {
-      const response = await fetch("https://bank-backend-a00q.onrender.com/api/users/login", {
+      const response = await fetch("https://bank-backend-1-4cqz.onrender.com/api/users/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -36,6 +36,13 @@ const GlobalProvider = ({ children }) => {
     }
   };
 
+  // Function to handle logout
+  const logout = () => {
+    setUser(null); // Clear user data
+    setIsLogged(false); // Set logged out status
+    setError(""); // Clear error messages (optional)
+  };
+
   return (
     <GlobalContext.Provider
       value={{
@@ -46,6 +53,7 @@ const GlobalProvider = ({ children }) => {
         loading,
         error,
         login, // Expose the login function
+        logout, // Expose the logout function
       }}
     >
       {children}

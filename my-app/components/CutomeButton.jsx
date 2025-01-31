@@ -11,15 +11,14 @@ const CustomButton = ({
     <TouchableOpacity
       onPress={handlePress}
       activeOpacity={0.7}
-      className={`rounded-[30px] min-h-[50px] flex flex-row justify-center items-center ${containerStyles} ${
+      className={`rounded-[30px] max-h-[50px] flex flex-row justify-center items-center ${containerStyles} ${
         isLoading ? "opacity-50" : ""
       }`}
       disabled={isLoading}
     >
-      <Text className={`font-psemibold text-lg ${textStyles}`}>
+      <Text className={`font-psemibold text-lg ${textStyles}`} maxFontSizeMultiplier={1}>
         {title}
       </Text>
-
       {isLoading && (
         <ActivityIndicator
           animating={isLoading}

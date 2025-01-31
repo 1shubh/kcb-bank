@@ -30,6 +30,12 @@ const AuthLayout = () => {
             headerShown: false,
           }}
         />
+        <Stack.Screen
+          name="sign-in-pin-screen"
+          options={{
+            headerShown: false,
+          }}
+        />
       </Stack>
     </>
   );

@@ -7,13 +7,14 @@ import {
   Alert,
   TouchableOpacity,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Dropdown } from "react-native-element-dropdown";
 import Warning from "./Warning";
 import Otp from "./Otp";
-import { router } from "expo-router";
+import { router, useGlobalSearchParams } from "expo-router"; // Get the router params here
 import CustomButton from "./CutomeButton";
 import { useGlobalContext } from "../context/GlobalProvider";
+import Pin from "./EnterPin";
 
 const OtherBankForm = ({
   otherBank,
@@ -29,7 +30,18 @@ const OtherBankForm = ({
   const [loading, setLoading] = useState(false);
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [step, setStep] = useState(1);
+  const { pinVerified, currentStep } = useGlobalSearchParams();
   const data = [{ label: "KCB Bank ******2924", value: "1" }];
+
+  // Get the params from the pin screen
+
+  // console.log(pinVerified,currentStep)
+  // If pin was successfully verified, go to step 3
+  useEffect(() => {
+    if (pinVerified) {
+      setStep(3);
+    }
+  }, [pinVerified]);
 
   const validateForm = () => {
     let valid = true;
@@ -57,8 +69,18 @@ const OtherBankForm = ({
     setLoading(false); // Hide the spinner after validation
   };
 
+  const HandleProceed = () => {
+    // When navigating to the pin screen, pass a callback param to redirect back
+    router.push({
+      pathname: "pin-screen",
+      params: {
+        // You can pass any necessary parameters here
+        fromForm: true, // This can be a flag that you're coming from this screen
+      },
+    });
+  };
+
   const confirmTransfer = async (otp) => {
-    setStep(3);
     setLoading(true); // Show loading indicator
     try {
       // Proceed with the transfer logic using OTP
@@ -102,7 +124,7 @@ const OtherBankForm = ({
   };
 
   return (
-    <View>
+    <View className="relative h-[550px]">
       <Dropdown
         style={[styles.dropdown, isFocus && { borderColor: "blue" }]}
         placeholderStyle={styles.placeholderStyle}
@@ -180,29 +202,17 @@ const OtherBankForm = ({
           </View>
         </View>
       )}
-      {/* Overlay Spinner */}
-      {loading && (
-        <View style={styles.overlay}>
-          <View
-            style={styles.spinnerContainer}
-            className="flex-row gap-5 items-center"
-          >
-            <ActivityIndicator size="large" color="#00ff00" />
-            <Text style={styles.loadingText}>Validating...</Text>
-          </View>
-        </View>
-      )}
       {showConfirmation &&
         (step === 3 ? (
           <Otp
-            confirmTransfer={confirmTransfer} // Pass the confirmTransfer function
-            amount={amount} // Pass the amount
-            recipientAccount={recipientAccount} // Pass the recipient account
+            confirmTransfer={confirmTransfer}
+            amount={amount}
+            recipientAccount={recipientAccount}
           />
         ) : (
           <Warning
             setShowConfirmation={setShowConfirmation}
-            confirmTransfer={confirmTransfer} // Pass confirmTransfer instead of completeTransfer
+            confirmTransfer={HandleProceed}
             amount={amount}
             data={data}
             recipientAccount={recipientAccount}

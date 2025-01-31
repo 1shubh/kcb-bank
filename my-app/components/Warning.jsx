@@ -5,30 +5,48 @@ import {
   TouchableOpacity,
   ScrollView,
   SafeAreaView,
+  Image,
 } from "react-native";
 import React from "react";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
+import { icons } from "../constants/icons";
 const Warning = ({
   setShowConfirmation,
   confirmTransfer,
   amount,
   data,
   recipientAccount,
+  recipientName,
   otherBank,
+  mobile,
+  mobileNumber,
 }) => {
+  function calculatePercentage(amount, percentage) {
+    return (amount * percentage) / 100;
+  }
   return (
     <View style={styles.overlay}>
       <View style={styles.confirmationContainer}>
-        <View>
-          <View className="border-2 border-[#19c1ef] rounded-full p-5 items-center justify-center w-[150px] h-[150px] ml-auto mr-auto">
-            <MaterialIcons name="send-to-mobile" size={80} color="#19c1ef" />
+        <View className="flex-1 justify-between">
+          <View className="rounded-full p-5 items-center justify-center w-[180px] h-[180px] ml-auto mr-auto">
+            <Image
+              source={icons.warningIcon}
+              className="w-full h-full"
+              resizeMode="contain"
+            />
           </View>
           <Text className="text-center text-2xl mt-1 font-dBold text-[#19c1ef]">
             Pesalink Transfer
           </Text>
-          <Text style={styles.confirmationText}>
-            You are transferring {amount} from {data[0].label} to the account{" "}
-            {recipientAccount} at {otherBank}. Do you want to proceed?
+          <Text className="font-mregular text-gray-500 text-[18px] text-center">
+            Send KES {amount} to
+            {recipientAccount && `${recipientAccount} ${recipientName}`}{" "}
+            {otherBank && `${otherBank}`}
+            {mobile && `${mobile} number ${mobileNumber}`} from account{" "}
+            {data[0].label}
+          </Text>
+          <Text className="text-center text-[18px] text-gray-500 font-mregular">
+            You will be charged a fee of KES {calculatePercentage(amount, 4)}
           </Text>
           <View className="flex-col gap-2">
             <TouchableOpacity
@@ -86,6 +104,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     padding: 20,
     width: "80%",
+    height: "55%",
     borderRadius: 10,
     alignItems: "center",
     shadowColor: "#000",

@@ -1,4 +1,4 @@
-import { View, Text, Image, TouchableOpacity } from "react-native";
+import { View, Text, Image, TouchableOpacity, ScrollView } from "react-native";
 import React, { useState } from "react";
 import { Redirect, router } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -12,22 +12,32 @@ import Octicons from "@expo/vector-icons/Octicons";
 import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 import CustomDrawer from "../../components/CustomeDrawer";
 import { useGlobalContext } from "../../context/GlobalProvider";
+import { icons } from "../../constants/icons";
+import ImageSwiper from "../../components/Swiper";
 
 let quickLinks = [
   {
     title: "Send to Mobile",
     icon: (
-      <View className="rounded-full bg-[#ecf7ea] w-[50px] h-[50px] items-center justify-center">
-        <MaterialIcons name="send-to-mobile" size={30} color="#76b461" />
+      <View className="rounded-full w-[60px] h-[60px] items-center justify-center">
+        <Image
+          source={icons.mobileTranferIcon}
+          className="w-full h-full"
+          resizeMethod="cover"
+        />
       </View>
     ),
-    href: "",
+    href: "/mobile-transfer",
   },
   {
     title: "Bank Transfer",
     icon: (
-      <View className="rounded-full bg-[#e9f9fd] w-[50px] h-[50px] items-center justify-center">
-        <Feather name="send" size={30} color="#60b8cb" />
+      <View className="rounded-full w-[60px] h-[60px] items-center justify-center">
+        <Image
+          source={icons.bankTransferIcon}
+          className="w-full h-full"
+          resizeMethod="cover"
+        />
       </View>
     ),
     href: "/bank-transfer",
@@ -35,8 +45,12 @@ let quickLinks = [
   {
     title: "Buy Airtime",
     icon: (
-      <View className="rounded-full bg-[#fdf4e2] w-[50px] h-[50px] items-center justify-center">
-        <MaterialIcons name="phone-callback" size={30} color="#d8ac55" />
+      <View className="rounded-full w-[60px] h-[60px] items-center justify-center">
+        <Image
+          source={icons.phoneicon}
+          className="w-full h-full"
+          resizeMethod="cover"
+        />
       </View>
     ),
     href: "",
@@ -44,8 +58,12 @@ let quickLinks = [
   {
     title: "Insurance",
     icon: (
-      <View className="rounded-full bg-[#e7f8d2] w-[50px] h-[50px] items-center justify-center">
-        <FontAwesome6 name="hands-holding-child" size={24} color="#499b2f" />
+      <View className="rounded-full w-[60px] h-[60px] items-center justify-center">
+        <Image
+          source={icons.insurance}
+          className="w-full h-full"
+          resizeMethod="cover"
+        />
       </View>
     ),
     href: "",
@@ -53,8 +71,12 @@ let quickLinks = [
   {
     title: "Withdraw",
     icon: (
-      <View className="rounded-full bg-[#e5e6ed] w-[50px] h-[50px] items-center justify-center">
-        <FontAwesome6 name="money-bill-transfer" size={24} color="#4e4e6a" />
+      <View className="rounded-full w-[60px] h-[60px] items-center justify-center">
+        <Image
+          source={icons.withdrawicon}
+          className="w-full h-full"
+          resizeMethod="cover"
+        />
       </View>
     ),
     href: "",
@@ -62,8 +84,12 @@ let quickLinks = [
   {
     title: "Card Service",
     icon: (
-      <View className="rounded-full bg-[#e4f2f0] w-[50px] h-[50px] items-center justify-center">
-        <Octicons name="credit-card" size={30} color="#6fa09b" />
+      <View className="rounded-full w-[60px] h-[60px] items-center justify-center">
+        <Image
+          source={icons.cardIcon}
+          className="w-full h-full"
+          resizeMethod="cover"
+        />
       </View>
     ),
     href: "",
@@ -74,24 +100,36 @@ const otherLinks = [
   {
     title: "Paybill",
     icon: (
-      <View className="rounded-full bg-[#861054] w-[50px] h-[50px] items-center justify-center">
-        <FontAwesome5 name="receipt" size={24} color="white" />
+      <View className="rounded-full w-[50px] h-[50px] items-center justify-center">
+        <Image
+          source={icons.voompabill}
+          className="w-full h-full"
+          resizeMode="contain"
+        />
       </View>
     ),
   },
   {
     title: "Buy goods",
     icon: (
-      <View className="rounded-full bg-[#861054] w-[50px] h-[50px] items-center justify-center">
-        <FontAwesome5 name="file-invoice-dollar" size={24} color="white" />
+      <View className="rounded-full w-[50px] h-[50px] items-center justify-center">
+        <Image
+          source={icons.vompaphone}
+          className="w-full h-full"
+          resizeMode="contain"
+        />
       </View>
     ),
   },
   {
     title: "Lipa karo",
     icon: (
-      <View className="rounded-full bg-[#861054] w-[50px] h-[50px] items-center justify-center">
-        <FontAwesome5 name="user-graduate" size={24} color="white" />
+      <View className="rounded-full w-[50px] h-[50px] items-center justify-center">
+        <Image
+          source={icons.schoolBoy}
+          className="w-full h-full"
+          resizeMode="contain"
+        />
       </View>
     ),
   },
@@ -102,14 +140,16 @@ const HomeScreen = () => {
 
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const toggleDrawer = () => {
-    setIsDrawerOpen(!isDrawerOpen);
-    console.log("Drawer toggled, isDrawerOpen:", !isDrawerOpen); // Debugging the state change
+    router.push("/menu");
   };
-  return (
-    <>
-      {/* <CustomDrawer isOpen={isDrawerOpen} setIsOpen={setIsDrawerOpen} /> */}
 
-      <SafeAreaView className="bg-[#f1f1f1] h-full">
+  const username = user?.user.name;
+  const nameParts = username.split(" ");
+  const firstName = nameParts[0];
+  const lastName = nameParts[1] ? nameParts[1].charAt(0) : "";
+  return (
+    <SafeAreaView className="bg-[#f1f1f1] h-full">
+      <ScrollView>
         <LinearGradient
           colors={[
             "#63bc46",
@@ -139,23 +179,30 @@ const HomeScreen = () => {
 
           {/* user details */}
           <View className="flex-row items-center w-[75%] justify-between mt-5 ml-auto mr-auto">
-            <View className="w-[50%]">
-              <Text className="text-[#68b352] font-dBold">Good Evening</Text>
-              <Text className="text-3xl font-dBold text-white">
-                {loading ? "" : user.user.name}
+            <View className="w-[55%]">
+              <Text className="text-[#68b352] font-mnbold text-[14px]">
+                Good Evening
+              </Text>
+              <Text className="text-[28px] font-mnregular text-white uppercase">
+                {loading ? "" : `${firstName} ${lastName}.`}
               </Text>
             </View>
 
-            <View className="w-[100px] h-[100px] border-2 border-white rounded-full items-center justify-center overflow-hidden">
-              {user && user.user.image ? (
+            <View className="w-[80px] h-[80px] rounded-full items-center justify-center overflow-hidden">
+              {/* {user && user?.user.image ? (
                 <Image
-                  source={{ uri: user.user.image }}
+                  source={{ uri: user?.user.image }}
                   className="w-full h-full" // Use full width and height
                   resizeMode="cover" // Use cover for better fitting
                 />
               ) : (
                 <Feather name="user" size={45} color="white" />
-              )}
+              )} */}
+              <Image
+                source={icons.userIcon}
+                className="w-full h-full" // Use full width and height
+                resizeMode="cover" // Use cover for better fitting
+              />
             </View>
           </View>
 
@@ -184,7 +231,7 @@ const HomeScreen = () => {
 
                     <Text
                       style={{ textAlign: "center", marginTop: 5 }}
-                      className="text-[10px] font-semibold uppercase"
+                      className="text-[9.5px] font-mnsemibold uppercase"
                     >
                       {ele.title}
                     </Text>
@@ -194,11 +241,11 @@ const HomeScreen = () => {
             </View>
           </View>
         </LinearGradient>
-        <Text className=" text-secondary text-[14px] font-semibold mt-[145px] w-[80%] ml-auto mr-auto">
+        <Text className=" text-secondary text-[14px] font-mnmedium mt-[100px] w-[80%] ml-auto mr-auto">
           VOOMA PAY
         </Text>
         {/* voompa links */}
-        <View className="w-[80%] ml-auto mr-auto flex-row flex-wrap mt-5 justify-between">
+        <View className="w-[80%] ml-auto mr-auto flex-row flex-wrap mt-1 justify-between">
           {otherLinks.map((ele, i) => {
             return (
               <TouchableOpacity
@@ -208,7 +255,7 @@ const HomeScreen = () => {
                 {ele.icon}
                 <Text
                   style={{ textAlign: "center", marginTop: 5 }}
-                  className="text-[10px] font-semibold uppercase"
+                  className="text-[10px] font-mnsemibold uppercase"
                 >
                   {ele.title}
                 </Text>
@@ -216,8 +263,14 @@ const HomeScreen = () => {
             );
           })}
         </View>
-      </SafeAreaView>
-    </>
+        <View className="mt-3 h-[200px] w-[100%] ml-auto mr-auto">
+          <Text className=" text-secondary text-[14px] mb-2 font-mnmedium uppercase w-[80%] ml-auto mr-auto">
+            Deals
+          </Text>
+          <ImageSwiper />
+        </View>
+      </ScrollView>
+    </SafeAreaView>
   );
 };
 

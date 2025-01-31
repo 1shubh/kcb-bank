@@ -1,64 +1,69 @@
-import { View, Text, StyleSheet, Image } from "react-native";
+import { View, Text, StyleSheet, Image, ImageBackground } from "react-native";
 import { Redirect, router } from "expo-router";
 import React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { LinearGradient } from "expo-linear-gradient";
 import logo from "../assets/images/logo.png";
-import { BankingIcon } from "../constants/icons";
+import { BankingIcon, icons } from "../constants/icons";
 import CustomButton from "../components/CutomeButton";
 import { useGlobalContext } from "../context/GlobalProvider";
+import { images } from "../constants/images";
+
 const Welcome = () => {
-  const { loading, isLogged } = useGlobalContext();
-  if (!loading && isLogged) return <Redirect href="/(tabs)" />;
+  const { loading, isLogged, user } = useGlobalContext();
+  if (!loading && isLogged && user) return <Redirect href="/(tabs)" />;
 
   return (
-    <LinearGradient
-      colors={[
-        "#63bc46",
-        "#00b15c",
-        "#00a06c",
-        "#008b74",
-        "#007374",
-        "#005a6d",
-        "#0e425f",
-        "#1f2c4c",
-      ]}
-      start={{ x: 1, y: 0.1 }} // Start at the top right
-      end={{ x: 0, y: 1 }} // End at the bottom left
-      style={styles.container}
+    <ImageBackground
+      source={images.homebg}
+      style={styles.backgroundImage}
+      resizeMode="cover"
+      className="h-full w-full"
     >
-      <SafeAreaView>
-        <Image
-          source={logo}
-          className="w-[160px] h-[84px] m-auto mt-10"
-          resizeMode="contain"
-        />
-        <View className="flex-row items-center justify-center mt-20">
-          <BankingIcon width={120} height={130} />
+      <SafeAreaView style={styles.safeArea}>
+        <View>
+          <Image source={logo} style={styles.logo} resizeMode="contain" />
+          <View style={styles.iconContainer}>
+            <Image
+              source={icons.welcomeIcon}
+              resizeMode="contain"
+              className="border w-[250px] h-[250px]"
+            />
+          </View>
+          <View style={styles.textContainer}>
+            <Text
+              style={styles.welcomeText}
+              maxFontSizeMultiplier={1.2}
+              className="font-mbold"
+            >
+              Welcome
+            </Text>
+            <Text
+              style={styles.subText}
+              maxFontSizeMultiplier={1.2}
+              className="font-mregular"
+            >
+              Welcome to the new {"\n"} and revamped KCB app.
+            </Text>
+          </View>
         </View>
-        <View className="mt-10">
-          <Text className="text-center text-primary font-bold text-[45px] font-dBold">
-            Welcome
-          </Text>
-          <Text className="text-white text-center mt-1 w-[50%] m-auto text-[15px]">
-            Welcome to the new {"\n"} and revamped KCB app.
-          </Text>
-        </View>
-        <View className="w-[80%] m-auto mt-40">
+
+        {/* Place buttons at the end */}
+        <View style={styles.buttonsContainer}>
           <CustomButton
-            containerStyles={"border border-white"}
+            containerStyles={"border border-white h-[40px]"}
             title={"Learn More"}
-            textStyles={"text-white"}
+            textStyles={"text-white text-[15px] uppercase font-mregular"}
           />
           <CustomButton
-            containerStyles={"mt-5 bg-primary"}
+            containerStyles={"mt-5 bg-primary h-[40px]"}
             title={"Get Started"}
-            textStyles={"text-white"}
+            textStyles={"text-white text-[15px] uppercase font-mregular"}
             handlePress={() => router.push("/sign-in")}
           />
         </View>
       </SafeAreaView>
-    </LinearGradient>
+    </ImageBackground>
   );
 };
 
@@ -66,11 +71,40 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  text: {
+  safeArea: {
+    flex: 1,
+    justifyContent: "space-between", // Ensures content is spread out
+  },
+  logo: {
+    width: 160,
+    height: 80,
+    alignSelf: "center",
+    marginTop: 0,
+  },
+  iconContainer: {
+    flexDirection: "row",
+    justifyContent: "center",
+    marginTop: 30,
+  },
+  textContainer: {
+    alignItems: "center",
+    marginTop: 40,
+  },
+  welcomeText: {
+    color: "#63bc46",
+    fontSize: 55,
+  },
+  subText: {
     color: "white",
-    fontSize: 24,
+    fontSize: 15,
     textAlign: "center",
-    marginTop: 20,
+    marginTop: 10,
+    width: "50%",
+  },
+  buttonsContainer: {
+    width: "60%",
+    alignSelf: "center",
+    marginBottom: 30, // Gives space from the bottom of the screen
   },
 });
 
